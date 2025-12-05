@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task <i class="fa fa-cc-mastercard" aria-hidden="true"></i></title>
+<title>Task Manager</title>
 {% endblock %}
 
 {% block body %}
@@ -15,6 +15,7 @@
             <th>Task</th>
             <th>Added</th>
             <th>Actions</th>
+            <th>Finished</th>
         </tr>
         {% for task in tasks %}
             <tr>
@@ -25,6 +26,15 @@
                     <br>
                     <a href="/update/{{task.id}}">Update</a>
                 </td>
+                <td> 
+                    <form action="/finish/{{task.id}}" method="POST" class="finish-form">
+                        <input type="hidden" name="status" value="off">
+                        
+                        <input type="checkbox" name="finish" id="finish_{{task.id}}" 
+                            {% if task.finished %}checked{% endif %} 
+                            onchange="this.form.submit()">
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>
@@ -34,6 +44,10 @@
             <input type="text" name="content" id="content"> 
             <input type="submit" value="Add task">
         </form>
+    </div>
+
+    <div name="finished_tasks">
+        <a href="{{ url_for('archive')}}">Finished tasks</a>
     </div>
 </div>
 {% endblock %}
